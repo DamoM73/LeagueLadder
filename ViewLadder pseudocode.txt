@@ -1,0 +1,31 @@
+DEFINE menuBtn BUTTON
+DEFINE menu BOOLEAN
+DEFINE comp STRING
+DEFINE compChoice DROPDOWN
+DEFINE click EVENT
+
+menu = FALSE
+comp = ""
+
+WHILE menu == FALSE
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT label("Moreton Bay Boys' College")
+	OUTPUT label("Competitive Games Leagues - View Ladders")
+	OUTPUT mainMenuBtn
+	OUTPUT compChoice
+	
+	comp = compChoice.GET
+	IF compChoice != ""
+		OUTPUT "#1" SELECT name, points FROM database WHERE competition = comp AND rank = 1
+		OUTPUT "#2" SELECT name, points FROM database WHERE competition = comp AND rank = 2
+		OUTPUT "#3" SELECT name, points FROM database WHERE competition = comp AND rank = 3
+	ENDIF
+	
+	IF click == menuBtn
+		menu = TRUE
+	ENDIF
+ENDWHILE
+CLOSE window	

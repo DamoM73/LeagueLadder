@@ -1,0 +1,94 @@
+DEFINE click EVENT
+DEFINE competitions LIST
+DEFINE ,compChoice DROPDOWN
+DEFINE comp STRING
+DEFINE playersTxt TEXTBOX
+DEFINE playerNum INTEGER
+DEFINE go BOOLEAN
+DEFINE goBtn BUTTON
+DEFINE menuBtn BUTTON
+DEFINE submitBtn BUTTON
+DEFINE submitted BOOLEAN
+DEFINE matchResults LIST
+DEFINE index INTEGER
+DEFINE players LIST
+DEFINE playerChoice DROPDOWN
+DEFINE codeTxt TEXTBOX
+DEFINE resultChoice DROPDOWN
+DEFINE mainMenuBtn BUTTON
+DEFINE submitBtn BUTTON
+DEFINE player STRING
+DEFINE code INTEGER
+DEFINE result STRING
+
+submitted = FALSE
+go = FALSE
+
+WHILE submitted = FALSE:
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT label("Moreton Bay Boys' College")
+	OUTPUT label("Competitive Games Leagues - Enter results")
+	OUTPUT mainMenuBtn
+	OUTPUT submitBtn
+		
+	# draw match details	
+	competitions = SELECT competitions FROM database
+	
+	WHILE go == FALSE
+		OUTPUT compChoice(competitions)
+		OUTPUT LABEL("Number of Players")
+		OUTPUT playersTxt
+		OUTPUT goBtn
+		IF click == goBtn
+			comp = compChoice.GET
+			playerNum = playersTxt.GET
+			IF comp != "" AND playerNum > 0 AND playerNum < 6
+				go = TRUE
+			ENDIF
+		ENDIF
+	ENDWHILE
+	
+	# draw player input details
+	players = SELECT players FROM database WHERE competitions == comp
+	index = 0
+	WHILE index < players
+		OUTPUT playerChoice(players)
+		OUTPUT codeTxt
+		OUTPUT resultChoice("win","loss","draw")
+		index += 1
+	ENDWHILE
+	
+	# Submitting
+	IF click == submitBtn
+		# Check if codes are correct
+		index = 0
+		codesCorrect == TRUE
+		WHILE index < players AND codesCorrect == TRUE
+			player = playerChoice.GET
+			code = codeTxt.GET
+			IF code != SELECT code FROM database WHERE name == player
+				OUTPUT "Code error for player", index + 1
+				codesCorrect = FALSE
+			ENDIF
+		ENDWHILE
+		
+		# Write results to database
+		IF codesCorrect == TRUE
+			index = 0
+			WHILE index < players
+				player = playerChoice.GET
+				result = resultChoice.GET
+				INSERT player, result INTO database
+				submitted = TRUE
+			ENDWHILE
+		ENDIF
+	ENDIF
+	
+	# Exit to Main Menu
+	IF click == menuBtn
+		CLOSE window
+	ENDIF
+ENDWHILE

@@ -1,0 +1,50 @@
+# MAIN WINDOW
+DEFINE click EVENT
+DEFINE enterResultsBtn BUTTON
+DEFINE viewLaddersBtn BUTTON
+DEFINE viewRankingBtn BUTTON
+DEFINE resendCodeBtn BUTTON
+DEFINE createCompBtn BUTTON
+DEFINE joinCompBtn BUTTON
+DEFINE addStudentBtn BUTTON
+DEFINE editResultBtn BUTTON
+
+
+WHILE TRUE:
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT LABEL("Moreton Bay Boys' College")
+	OUTPUT LABEL("Competitive Games Leagues")
+	OUTPUT LABEL("Competitions")
+	OUTPUT LABEL("Students")
+	OUTPUT LABEL("Adminstration")
+	OUTPUT enterResultsBtn("Enter Result")
+	OUTPUT viewLaddersBtn("View Ladders")
+	OUTPUT viewRankingBtn("View Ranking")
+	OUTPUT resendCodeBtn("Resend Code")
+	OUTPUT createCompBtn("Create Competition")
+	OUTPUT joinCompBtn("Join Competition")
+	OUTPUT addStudentBtn("Add New Student")
+	OUTPUT editResultBtn("Edit Results")
+
+	IF click == enterResultsBtn
+		CALL enterResults
+	ELSEIF click == viewLaddersBtn
+		CALL viewLadders
+	ELSEIF click == viewRankingBtn
+		CALL viewRanking
+	ELSEIF click == resendCodeBtn
+		CALL resendCode
+	ELSEIF click == createCompBtn
+		CALL createComp
+	ELSEIF click == joinCompBtn
+		CALL joinComp
+	ELSEIF click == addStudentBtn
+		CALL addStudent
+	ELSEIF click == editResultBtn
+		CALL editResult
+	ELSEIF click == close
+		BREAK
+	ENDIF
+ENDWHILE
