@@ -1,0 +1,32 @@
+DEFINE mainmenu BOOLEAN
+DEFINE mainMenuBtn BUTTON
+DEFINE goBtn BUTTON
+DEFINE studentSelect DROPDOWN
+DEFINE student STRING
+DEFINE click EVENT
+DEFINE students LIST
+DEFINE code INTEGER
+DEFINE email STRING
+
+mainmenu =FALSE
+
+WHILE mainmenu == FALSE
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues - Resend Code"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT LABEL("Moreton Bay Boys' College")
+	OUTPUT LABEL("Resend Code")
+	OUTPUT mainMenuBtn
+	OUTPUT goBtn
+	
+	students = SELECT name FROM database
+	OUTPUT studentSelect(students)
+	
+	IF click == goBtn
+		student = studentSelect.GET
+		code = SELECT code FROM database WHERE name = student
+		email = SELECT email FROM database WHERE name = student
+		EMAIL code TO email
+	ENDIF
+ENDWHILE

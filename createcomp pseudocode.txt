@@ -1,0 +1,30 @@
+DEFINE mainmenu BOOLEAN
+DEFINE mainMenuBtn BUTTON
+DEFINE createBtn BUTTON
+DEFINE click EVENT
+DEFINE compTxt TEXTBOX
+DEFINE comp STRING
+
+mainmenu = FALSE
+
+WHILE mainmenu == FALSE
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues - Create Competition"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT LABEL("Moreton Bay Boys' College")
+	OUTPUT LABEL("Create Competition")
+	OUTPUT mainMenuBtn
+	OUTPUT LABEL("Competition Name:")
+	OUTPUT compTxt
+	OUTPUT createBtn
+	
+	IF click == createBtn AND compTxt != ""
+		comp = compTxt
+		INSERT comp INTO database
+	
+	IF click == mainMenuBtn
+		mainmenu = TRUE
+	ENDIF
+ENDWHILE
+CLOSE window

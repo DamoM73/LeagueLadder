@@ -1,0 +1,68 @@
+DEFINE mainmenu BOOLEAN
+DEFINE mainMenuBtn BUTTON
+DEFINE students LIST
+DEFINE studentSelect DROPDOWN
+DEFINE student STRING
+DEFINE codeTxt TEXTBOX
+DEFINE code INTEGER
+DEFINE comps LIST
+DEFINE compSelect DROPDOWN
+DEFINE comp LIST
+DEFINE goBtn BUTTON
+DEFINE click EVENT
+DEFINE rank INTEGER
+DEFINE ladder LIST
+
+
+mainmenu =FALSE
+
+WHILE mainmenu == FALSE
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues - View Ranking"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT LABEL("Moreton Bay Boys' College")
+	OUTPUT LABEL("View Ranking")
+	OUTPUT mainMenuBtn
+	OUTPUT goBtn
+	
+	# Student dropdown
+	students = SELECT name FROM database
+	OUTPUT studentSelect(students)
+	
+	# Student codeTxt
+	OUTPUT LABEL("Code:")
+	OUTPUT codeTxt
+	
+	# Competition dropdown
+	student = studentSelect.GET
+	comps = SELECT competitions FROM database WHERE student == student
+	OUTPUT compSelect(comps)
+	
+	# Check codeTxt when go button clicked
+	IF click == goBtn
+		code = codeTxt.GET
+		comp = compSelect.GET
+		IF code == SELECT code FROM database WHERE student == student
+			
+			# correct code retrieve details and print to screen
+			OUTPUT LABEL("Rank", "Sudent", "Score")
+			ladder = SELECT name, points FROM database WHERE competition == comp ORDER points
+			index = 0
+			WHILE ladder[index][0] != student
+				index += 1
+			ENDWHILE
+			OUTPUT LABEL(index, ladder[index-1][0], ladder[index-1][1])
+			OUTPUT LABEL(index+1, ladder[index][0], ladder[index][1])
+			OUTPUT LABEL(index+2, ladder[index+1][0], ladder[index+1][1])
+		ELSE
+			OUTPUT "Code error"
+		ENDIF
+	ENDIF
+	
+	# Menu button clicked
+	IF click == mainMenuBtn
+		mainmenu = TRUE
+	ENDIF
+ENDWHILE
+close window

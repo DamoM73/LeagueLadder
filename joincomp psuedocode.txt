@@ -1,0 +1,49 @@
+DEFINE mainmenu BOOLEAN
+DEFINE mainMenuBtn BUTTON
+DEFINE createBtn BUTTON
+DEFINE click EVENT
+DEFINE comps LIST
+DEFINE compSelect DROPDOWN
+DEFINE comp STRING
+DEFINE students LIST
+DEFINE studentSelect DROPDOWN
+DEFINE student STRING
+DEFINE codeTxt TEXTBOX
+DEFINE submitBtn BUTTON
+
+
+mainmenu = FALSE
+
+WHILE mainmenu == FALSE
+	# draw basic window
+	OUTPUT window (800 x 550)
+	SET Title "MBBC Competitive Games Leagues - Join Competition"
+	OUTPUT imagefile(crest.jpg)
+	OUTPUT LABEL("Moreton Bay Boys' College")
+	OUTPUT LABEL("Join Competition")
+	OUTPUT mainMenuBtn
+	
+	comps = SELECT comps FROM database
+	OUTPUT compSelect(comps)
+	comp = compSelect.GET
+	
+	IF comp != ""
+		students = SELECT students FROM database WHERE NOT IN  comp
+		OUTPUT studentSelect(students)
+	ENDIF
+	
+	IF click = submitBtn
+		student = studentSelect.GET
+		code = codeTxt.GET
+		IF code == SELECT code FROM database WHERE student == student
+			INSERT student INTO database WHERE competition = comp
+		ELSE
+			OUTPUT "Code error"
+		ENDIF
+	ENDIF
+		
+	IF click == mainMenuBtn
+		mainmenu = TRUE
+	ENDIF
+ENDWHILE
+CLOSE window
